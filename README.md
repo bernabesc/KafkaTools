@@ -8,6 +8,8 @@
 
 An all-in-one kafka tool written in `Java` to easly post json files to kafka
 
+** I do plan to add a consume message later (not sure if saving the consumed message into json is useful)
+
 # Features 
 ## v1.0
 

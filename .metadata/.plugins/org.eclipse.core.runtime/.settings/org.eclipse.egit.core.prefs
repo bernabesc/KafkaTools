@@ -1,0 +1,8 @@
+GitRepositoriesView.GitDirectories=
+GitRepositoriesView.GitDirectories.relative=
+RepositorySearchDialogSearchPath=C\:\\Workspaces\\8839\\Walmart5Node
+core_defaultRepositoryDir=C\:\\Workspaces\\NewLaurens\\Git\\WalmartLaurens\\.git
+core_http_client=jdk
+core_remote_connection_timeout=120
+core_ssh_default_agent=\\\\.\\pageant
+eclipse.preferences.version=1

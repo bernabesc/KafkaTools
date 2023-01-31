@@ -1,0 +1,170 @@
+package com.application;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.apache.kafka.common.config.ConfigException;
+
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.kafkatools.KafkaSender;
+import com.ssn.acx.adi.core.utility.formlayout.layout.Border;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+
+public class MainApplication extends JFrame {
+
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(new FlatDarkLaf());
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+		new MainApplication();
+	}
+
+	private static final long serialVersionUID = 1L;
+	private JButton selectButton;
+	private JButton sendJsonButton;
+	private JTextField filePathField;
+	private JLabel ipAddressLabel;
+	private JTextField ipAddressField;
+	private JTextField kafkaTopicField;
+	private JFileChooser fileChooser;
+	private JLabel kafkaTopicLabel;
+	private JLabel filePathLabel;
+
+	public MainApplication() {
+		super("File Chooser Example");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		ipAddressLabel = new JLabel("Kafka IP Address:");
+		ipAddressField = new JTextField(30);
+
+		kafkaTopicLabel = new JLabel("Kafka Topic:");
+		kafkaTopicField = new JTextField(30);
+
+		filePathLabel = new JLabel("Json File:");
+		filePathField = new JTextField(25);
+
+
+		// Create the Select button and add an action listener
+		selectButton = new JButton("Browse");
+		selectButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Create the file chooser and set its properties
+				fileChooser = new JFileChooser();
+
+				File desktop = new File(System.getProperty("user.home"), "Desktop");
+				fileChooser.setCurrentDirectory(desktop);                
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON files", "json"));
+				fileChooser.setDialogTitle("Select a JSON file");
+				fileChooser.setApproveButtonText("Open");
+				fileChooser.setApproveButtonMnemonic(KeyEvent.VK_O);
+				fileChooser.setApproveButtonToolTipText("Open the selected JSON file");
+
+				if (fileChooser.showOpenDialog(MainApplication.this) == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					filePathField.setText(selectedFile.getAbsolutePath());
+					sendJsonButton.setEnabled(true);
+				}
+			}
+		});
+		selectButton.setSize(5,5);
+
+		// Create the Send JSON button and add an action listener
+		sendJsonButton = new JButton("Send JSON");
+		sendJsonButton.setEnabled(false);
+		sendJsonButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get the selected file and do something with it
+				File selectedFile = fileChooser.getSelectedFile();
+				System.out.println(selectedFile.getName());
+				String message;
+				if(!ipAddressField.getText().isEmpty()) {
+
+					try {
+						KafkaSender sender = new KafkaSender(ipAddressField.getText());
+						sender.sendJson("test", "", "message");
+
+						message = String.format("Sent %s to kafka", selectedFile.getName());
+					} catch (Exception e1) {
+						message = String.format("Error: ", e1);
+					}
+				}else {
+					message = String.format("IP field is blank", selectedFile.getName());
+				}
+
+
+				JOptionPane.showMessageDialog(null, message);
+
+
+
+
+
+
+			}
+		});
+
+		GridBagLayout gridbag = new GridBagLayout();
+		setLayout(gridbag);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 1.0;
+
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 4;
+		add(ipAddressLabel,c);
+
+		c.gridx = 1;
+		add(ipAddressField,c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		add(kafkaTopicLabel,c);
+		c.gridx = 1;
+		add(kafkaTopicField,c);
+
+		c.gridx = 0;
+		c.gridy = 2;
+		add(filePathLabel);
+
+		c.gridx=1;
+		add(filePathField,c);
+
+		c.gridx=2;
+		add(selectButton,c);
+
+		c.gridx = 0;
+		c.gridy = 3;
+		add(sendJsonButton,c);
+
+
+		//Set Header Properties
+		FlatLightLaf.setup(); //setting the look and feel
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		getRootPane().putClientProperty("JRootPane.titleBarBackground", new Color(23,180,252));
+		getRootPane().putClientProperty("JRootPane.titleBarForeground", Color.white);
+
+		// Set the frame properties
+		setSize(570, 200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new FlowLayout());
+		setLocationRelativeTo(null);
+		setResizable(true);
+		setVisible(true);
+
+	}
+}

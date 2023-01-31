@@ -1,0 +1,168 @@
+package com.application;
+
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.formdev.flatlaf.FlatDarkLaf;
+
+public class ApplicationWindow {
+
+	private JFileChooser fileChooser;
+	private JFrame frmPostToKafka;
+	private JTextField ipAddressTextField;
+	private JTextField textField_1;
+	private JTextField txtJsonFile;
+	private JTextField textField_2;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(new FlatDarkLaf());
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+				}
+				try {
+					ApplicationWindow window = new ApplicationWindow();
+					window.frmPostToKafka.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ApplicationWindow() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmPostToKafka = new JFrame();
+		frmPostToKafka.setTitle("Post to Kafka 1.0 (Internal Use)");
+		frmPostToKafka.setBounds(100, 100, 460, 281);
+		frmPostToKafka.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JLabel ipAddressLabel = new JLabel("Kafka IP Address:");
+		
+		ipAddressTextField = new JTextField();
+		ipAddressTextField.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Kafka Topic");
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		
+		txtJsonFile = new JTextField();
+		txtJsonFile.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("JSON File");
+		
+		JButton btnNewButton_1 = new JButton("Send JSON");
+		btnNewButton_1.setEnabled(false);
+		
+		JLabel lblNewLabel_3 = new JLabel("Header (Optional)");
+		
+		JButton btnNewButton = new JButton("Browse");
+		btnNewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Create the file chooser and set its properties
+				fileChooser = new JFileChooser();
+
+				File desktop = new File(System.getProperty("user.home"), "Desktop");
+				fileChooser.setCurrentDirectory(desktop);                
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON files", "json"));
+				fileChooser.setDialogTitle("Select a JSON file");
+				fileChooser.setApproveButtonText("Open");
+				fileChooser.setApproveButtonMnemonic(KeyEvent.VK_O);
+				fileChooser.setApproveButtonToolTipText("Open the selected JSON file");
+
+				if (fileChooser.showOpenDialog(frmPostToKafka) == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					txtJsonFile.setText(selectedFile.getAbsolutePath());
+					btnNewButton_1.setEnabled(true);
+				}
+			}
+		});
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		GroupLayout groupLayout = new GroupLayout(frmPostToKafka.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(26)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel_1)
+								.addComponent(ipAddressLabel)
+								.addComponent(lblNewLabel_3)
+								.addComponent(lblNewLabel_2))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(ipAddressTextField, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(txtJsonFile, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnNewButton))
+								.addComponent(textField_1, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap(349, Short.MAX_VALUE)
+							.addComponent(btnNewButton_1)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(29)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(ipAddressLabel)
+						.addComponent(ipAddressTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblNewLabel_1)
+						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel_3)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtJsonFile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_2)
+						.addComponent(btnNewButton))
+					.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+					.addComponent(btnNewButton_1)
+					.addContainerGap())
+		);
+		frmPostToKafka.getContentPane().setLayout(groupLayout);
+	}
+}

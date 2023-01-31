@@ -1,0 +1,204 @@
+package com.application;
+
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import javax.swing.JFrame;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.kafkatools.KafkaSender;
+
+public class ApplicationWindow {
+
+	private JFileChooser fileChooser;
+	private JFrame frmPostToKafka;
+	private JTextField ipAddressTextField;
+	private JTextField TopicTextField;
+	private JTextField jsonFileTextField;
+	private JTextField headerTextField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(new FlatDarkLaf());
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+				}
+				try {
+					ApplicationWindow window = new ApplicationWindow();
+					window.frmPostToKafka.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public ApplicationWindow() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmPostToKafka = new JFrame();
+		frmPostToKafka.setTitle("Post to Kafka 1.0 (Internal Use)");
+		frmPostToKafka.setBounds(100, 100, 460, 281);
+		frmPostToKafka.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JLabel ipAddressLabel = new JLabel("Kafka IP Address:");
+		
+		ipAddressTextField = new JTextField();
+		ipAddressTextField.setColumns(10);
+		
+		JLabel topicLabel = new JLabel("Kafka Topic");
+		
+		TopicTextField = new JTextField();
+		TopicTextField.setColumns(10);
+		
+		jsonFileTextField = new JTextField();
+		jsonFileTextField.setColumns(10);
+		
+		JLabel jsonFileLabel = new JLabel("JSON File");
+		
+		JButton sendJsonButton = new JButton("Send JSON");
+		sendJsonButton.setEnabled(false);
+		
+		JLabel headerLabel = new JLabel("Header (Optional)");
+		
+		JButton browseButton = new JButton("Browse");
+		browseButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Create the file chooser and set its properties
+				fileChooser = new JFileChooser();
+
+				File desktop = new File(System.getProperty("user.home"), "Desktop");
+				fileChooser.setCurrentDirectory(desktop);                
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JSON files", "json"));
+				fileChooser.setDialogTitle("Select a JSON file");
+				fileChooser.setApproveButtonText("Open");
+				fileChooser.setApproveButtonMnemonic(KeyEvent.VK_O);
+				fileChooser.setApproveButtonToolTipText("Open the selected JSON file");
+
+				if (fileChooser.showOpenDialog(frmPostToKafka) == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					jsonFileTextField.setText(selectedFile.getAbsolutePath());
+					sendJsonButton.setEnabled(true);
+				}
+			}
+		});
+		
+		headerTextField = new JTextField();
+		headerTextField.setColumns(10);
+		GroupLayout groupLayout = new GroupLayout(frmPostToKafka.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(26)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(topicLabel)
+								.addComponent(ipAddressLabel)
+								.addComponent(headerLabel)
+								.addComponent(jsonFileLabel))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(headerTextField, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addComponent(ipAddressTextField, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(jsonFileTextField, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(browseButton))
+								.addComponent(TopicTextField, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap(349, Short.MAX_VALUE)
+							.addComponent(sendJsonButton)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(29)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(ipAddressLabel)
+						.addComponent(ipAddressTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(topicLabel)
+						.addComponent(TopicTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(headerLabel)
+						.addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jsonFileTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jsonFileLabel)
+						.addComponent(browseButton))
+					.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+					.addComponent(sendJsonButton)
+					.addContainerGap())
+		);
+		frmPostToKafka.getContentPane().setLayout(groupLayout);
+	}
+	
+	public ActionListener sendToKafkaLogic() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get the selected file and do something with it
+				File selectedFile = fileChooser.getSelectedFile();
+				System.out.println(selectedFile.getName());
+				String message;
+				if(!ipAddressTextField.getText().isEmpty()) {
+					if(!TopicTextField.getText().isEmpty()) {
+						try {
+							KafkaSender sender = new KafkaSender(ipAddressTextField.getText());
+							String json = new String(Files.readAllBytes(Paths.get(selectedFile.getAbsolutePath())));
+							
+							sender.sendJson(TopicTextField.getText(),"",json);
+							message = String.format("Sent %s to kafka", selectedFile.getName());
+						} catch (Exception e1) {
+							message = String.format("Error: %s", e1.getCause());
+						}
+					}else {
+						message = "Kafka Topic Field is blank";
+					}
+				}else {
+					message = "IP field is blank";
+				}
+				JOptionPane.showMessageDialog(null, message);
+			}
+		};
+		
+	}
+	
+}

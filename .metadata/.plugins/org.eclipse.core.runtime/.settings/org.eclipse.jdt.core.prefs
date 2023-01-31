@@ -1,0 +1,15 @@
+JRE_LIB=C\:/Program Files/Java/jdk1.8.0_221/jre/lib/rt.jar
+JRE_SRC=C\:/Program Files/Java/jdk1.8.0_221/src.zip
+JUNIT_HOME=C\:/Users/bernabe.soto/.p2/pool/plugins/org.junit_4.13.0.v20200204-1500.jar
+M2_REPO=C\:/Users/bernabe.soto/.m2/repository
+eclipse.preferences.version=1
+org.eclipse.jdt.core.classpathVariable.Libraries\ ECOM=C\:/Workspaces/2022_WMECOM/Project/Walmart5Node/Implementation/WAMAS/lib
+org.eclipse.jdt.core.classpathVariable.Tools=C\:/Workspaces/LAURENS/LAURENS_PROJ/Walmart-Laurens-WAMAS/tools
+org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
+org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=14
+org.eclipse.jdt.core.compiler.compliance=14
+org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
+org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
+org.eclipse.jdt.core.compiler.release=enabled
+org.eclipse.jdt.core.compiler.source=14

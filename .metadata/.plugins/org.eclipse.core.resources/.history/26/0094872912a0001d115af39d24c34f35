@@ -1,0 +1,5 @@
+package kafkatools;
+
+public class KafkaSender {
+
+}

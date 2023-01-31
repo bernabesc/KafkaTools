@@ -1,0 +1,10 @@
+INDEX VERSION 1.131+C:\Workspaces\KafkaJsonStandAlone\.metadata\.plugins\org.eclipse.jdt.core
+2896141972.index
+2274808670.index
+3049787620.index
+976387178.index
+1854614103.index
+3828848838.index
+1865797976.index
+998184451.index
+3346300936.index

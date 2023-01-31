@@ -1,0 +1,49 @@
+package com.kafkatools;
+
+import java.util.Properties;
+import java.awt.*;
+
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.config.ConfigException;
+
+
+public class KafkaSender {
+
+	Properties props;
+
+	/**
+	 * This method is only to be used for testing/generation
+	 * @param ipAddress  
+	 */
+	public KafkaSender(String ipAddress) {
+		props = new Properties();
+		props.put("bootstrap.servers", ipAddress);
+		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+	}
+
+	/**
+	 * This method is only to be used for testing/generation
+	 * @param topic  
+	 * @param key 
+	 * @param json 
+	 */
+	public String sendJson(String topic, String key, String json) {
+
+		try {
+			KafkaProducer<String, String> producer = new KafkaProducer<>(props);
+			// Create a new ProducerRecord with the topic name, message key, and message value (the JSON message)
+			ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, json);
+			// Send the record to the Kafka broker
+			producer.send(record);
+			// Close the producer to free up resources
+			producer.close();
+			return "NP";
+		} catch (Exception e) {
+			throw new ConfigException(e);
+		}
+
+	}
+
+}

@@ -6,8 +6,9 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/bernabesc/KafkaTools?=social)
 ![GitHub forks](https://img.shields.io/github/forks/bernabesc/KafkaTools?style=social)
 
-A small kafka tool written in `Java` to easly post json files to kafka
-This is extra useful if you dont have a docker or dont have access to where your kafka service is running, you can specify the ip and post your json
+A small kafka tool written in `Java` to easly post json files to kafka.
+
+This is extra useful if you dont have a docker or dont have access to where your kafka service is running, you can specify the ip and post your json.
 
 # How to use it:
 * At the ip of your docker ( if you are running it locally it prob is localhost:9093)

@@ -6,7 +6,15 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/bernabesc/KafkaTools?=social)
 ![GitHub forks](https://img.shields.io/github/forks/bernabesc/KafkaTools?style=social)
 
-An all-in-one kafka tool written in `Java` to easly post json files to kafka
+A small kafka tool written in `Java` to easly post json files to kafka
+
+To use it:
+At the ip of your docker ( if you are running it locally it prob is localhost:9093)
+At the topic (where you want the json to be posted at)
+You can also add a header (optional)
+Choose the json file
+Click Send JSON and voila!
+
 
 ** I do plan to add a consume message later (not sure if saving the consumed message into json is useful)
 

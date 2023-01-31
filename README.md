@@ -8,12 +8,12 @@
 
 A small kafka tool written in `Java` to easly post json files to kafka
 
-To use it:
-At the ip of your docker ( if you are running it locally it prob is localhost:9093)
-At the topic (where you want the json to be posted at)
-You can also add a header (optional)
-Choose the json file
-Click Send JSON and voila!
+# How to use it:
+* At the ip of your docker ( if you are running it locally it prob is localhost:9093)
+* At the topic (where you want the json to be posted at)
+* You can also add a header (optional)
+* Choose the json file
+* Click Send JSON and voila!
 
 
 ** I do plan to add a consume message later (not sure if saving the consumed message into json is useful)
